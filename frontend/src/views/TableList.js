@@ -17,6 +17,7 @@ function TableList() {
   let timer;
   const [domainList, setDomainList] = useState([]);
   const [newDomain, setNewDomain] = useState("");
+  const [imageVersion, setImageVersion] = useState("1");
 
   const getDomainListJob = () => {
     if (true) {
@@ -59,7 +60,7 @@ function TableList() {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({domainName: domainName})
+      body: JSON.stringify({ domainName: domainName })
     }).then(response => {
       getDomainList();
       return response.json();
@@ -70,19 +71,19 @@ function TableList() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    addDomain(newDomain);
+    addDomain(newDomain, imageVersion);
     event.target[0].value = '';
     setNewDomain('');
   };
 
-  const addDomain = (domainName) => {
+  const addDomain = (domainName, imageVersion) => {
     fetch("http://127.0.0.1:3001/addDomain", {
       method: "POST",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({domainName: domainName})
+      body: JSON.stringify({ domainName, imageVersion })
     }).then(response => {
       getDomainList();
       return response.json();
@@ -90,6 +91,8 @@ function TableList() {
       console.log(`[Delete Domain] ${error}`);
     });
   };
+
+  const handleSelectVersion =
 
   useEffect(() => {
     getDomainListJob();
@@ -122,6 +125,18 @@ function TableList() {
                             setNewDomain(e.target.value);
                           }}
                         ></Form.Control>
+                      </Form.Group>
+                    </Col>
+                    <Col md="4">
+                      <Form.Group>
+                        <label>Image Version</label>
+                        <Form.Select aria-label="Version" value={imageVersion} className="form-control" onChange={(e) => {
+                          setImageVersion(e.target.value);
+                        }}>
+                          <option>Open this select menu</option>
+                          <option value="1">6.3.04.013</option>
+                          <option value="2">6.3.04.014</option>
+                        </Form.Select>
                       </Form.Group>
                     </Col>
                   </Row>

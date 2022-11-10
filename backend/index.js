@@ -52,12 +52,12 @@ router.post('/deleteDomain', jsonParser, (req, res) => {
 router.post('/addDomain', jsonParser, (req, res) => {
   console.log('Add', req.body.domainName);
   const param = req.body;
-  if (_.isNil(param.domainName)) {
+  if (_.isNil(param.domainName) || _.isNil(param.imageVersion)) {
     res.json({ result: 'FAIL', reason: 'No param body' });
   }
-  const addDomainShell = fork("deployment.py", [param.domainName]);
+  const addDomainShell = fork("deployment.py", [param.domainName, param.imageVersion]);
   addDomainShell.on('close', (code) => {
-    console.log(`[Deployment] Domain ${param.domainName} success`);
+    console.log(`[Deployment] Domain ${param.domainName} Version ${param.imageVersion} success`);
     res.json({ result: 'SUCCESS' });
   });
 });
