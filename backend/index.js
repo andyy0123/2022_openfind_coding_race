@@ -11,7 +11,7 @@ const jsonParser = bodyParse.json();
 
 const corsOptions = {
   origin: [
-    'http://localhost:3000'
+    'http://k8s:3000'
   ],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -32,6 +32,8 @@ router.get('/getDomainList', (req, res) => {
       return;
     }
     const data = JSON.parse(stdout);
+    data.items[0].metadata.image = data.items[0].spec?.containers[0].image?.split('/')[1].split(':')[0];
+    data.items[0].metadata.version = data.items[0].spec?.containers[0].image?.split('/')[1].split(':')[1];
     res.json({ result: 'SUCCESS', data });
   })
 });

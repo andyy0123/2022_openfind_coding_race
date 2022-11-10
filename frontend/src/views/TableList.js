@@ -29,11 +29,10 @@ function TableList() {
   };
 
   const getDomainList = () => {
-    fetch("http://127.0.0.1:3001/getDomainList").then(response => {
+    fetch("http://k8s:3001/getDomainList").then(response => {
       return response.json();
     }).then((result) => {
-      const item = result.items[0];
-      const originImage = item.spec?.containers[0].image;
+      const item = result.data.items[0];
       const data = [{
         domainId: item.metadata?.uid,
         domainName: item.metadata?.labels?.domain,
@@ -54,7 +53,7 @@ function TableList() {
   };
 
   const deleteDomain = (domainName) => {
-    fetch("http://127.0.0.1:3001/deleteDomain", {
+    fetch("http://k8s:3001/deleteDomain", {
       method: "POST",
       headers: {
         'Accept': 'application/json',
@@ -77,7 +76,7 @@ function TableList() {
   };
 
   const addDomain = (domainName, imageVersion) => {
-    fetch("http://127.0.0.1:3001/addDomain", {
+    fetch("http://k8s:3001/addDomain", {
       method: "POST",
       headers: {
         'Accept': 'application/json',
