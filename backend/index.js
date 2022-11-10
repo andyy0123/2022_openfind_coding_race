@@ -32,8 +32,10 @@ router.get('/getDomainList', (req, res) => {
       return;
     }
     const data = JSON.parse(stdout);
-    data.items[0].metadata.image = data.items[0].spec?.containers[0].image?.split('/')[1].split(':')[0];
-    data.items[0].metadata.version = data.items[0].spec?.containers[0].image?.split('/')[1].split(':')[1];
+    _.forEach(data.items, item => {
+      item.metadata.image = item.spec?.containers[0].image?.split('/')[1].split(':')[0];
+      item.metadata.version = item.spec?.containers[0].image?.split('/')[1].split(':')[1];
+    });
     res.json({ result: 'SUCCESS', data });
   })
 });

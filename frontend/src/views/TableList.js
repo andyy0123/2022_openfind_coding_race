@@ -32,20 +32,23 @@ function TableList() {
     fetch("http://k8s:3001/getDomainList").then(response => {
       return response.json();
     }).then((result) => {
-      const item = result.data.items[0];
-      const data = [{
-        domainId: item.metadata?.uid,
-        domainName: item.metadata?.labels?.domain,
-        domainLink: `http://${item.metadata?.labels?.domain}`,
-        domainImage: item.metadata?.image,
-        domainVersion: item.metadata?.version,
-        domainStatus: item.status?.phase,
-        deleteDomain: () => {
-          console.log(`[Delete] ${item.metadata?.labels?.domain}`);
-          deleteDomain(item.metadata?.labels?.domain);
-        },
-        connectDomain: () => { console.log(`[Connect] ${item.metadata?.name.split('-')[0]}`) }
-      }]
+      const data = result.data.items.map(item => {
+        return {
+          domainId: item.metadata?.uid,
+          domainName: item.metadata?.labels?.domain,
+          domainLink: `http://${item.metadata?.labels?.domain}`,
+          domainImage: item.metadata?.image,
+          domainVersion: item.metadata?.version,
+          domainStatus: item.status?.phase,
+          deleteDomain: () => {
+            console.log(`[Delete] ${item.metadata?.labels?.domain}`);
+            deleteDomain(item.metadata?.labels?.domain);
+          },
+          connectDomain: () => {
+            console.log(`[Connect] ${item.metadata?.name.split('-')[0]}`);
+          }
+        }
+      });
       setDomainList(data);
     }).catch((error) => {
       console.error(error);
