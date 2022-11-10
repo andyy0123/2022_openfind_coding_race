@@ -91,8 +91,6 @@ function TableList() {
     });
   };
 
-  const handleSelectVersion =
-
   useEffect(() => {
     getDomainListJob();
   }, []);
