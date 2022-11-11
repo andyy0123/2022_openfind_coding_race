@@ -17,7 +17,7 @@ function TableList() {
   let timer;
   const [domainList, setDomainList] = useState([]);
   const [newDomain, setNewDomain] = useState("");
-  const [imageVersion, setImageVersion] = useState("1");
+  const [imageVersion, setImageVersion] = useState("6.3.04.013");
 
   const getDomainListJob = () => {
     if (true) {
@@ -45,7 +45,7 @@ function TableList() {
             deleteDomain(item.metadata?.labels?.domain);
           },
           connectDomain: () => {
-            console.log(`[Connect] ${item.metadata?.name.split('-')[0]}`);
+            window.open('localhost:8888', '_blank').focus();
           }
         }
       });
@@ -102,7 +102,7 @@ function TableList() {
     <>
       <Container fluid>
         <Row>
-          <Col md="8">
+          <Col md="12">
             <Card>
               <Card.Header>
                 <Card.Title as="h4">Domain</Card.Title>
@@ -134,8 +134,8 @@ function TableList() {
                           setImageVersion(e.target.value);
                         }}>
                           <option>Open this select menu</option>
-                          <option value="1">6.3.04.013</option>
-                          <option value="2">6.3.04.014</option>
+                          <option value="6.3.04.013">6.3.04.013</option>
+                          <option value="6.3.04.014">6.3.04.014</option>
                         </Form.Select>
                       </Form.Group>
                     </Col>
@@ -176,11 +176,6 @@ function TableList() {
                   </tbody>
                 </Table>
               </Card.Body>
-            </Card>
-          </Col>
-          <Col md="4">
-            <Card>
-              Wait for cmd
             </Card>
           </Col>
         </Row>
