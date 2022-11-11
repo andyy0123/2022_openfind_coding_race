@@ -45,7 +45,15 @@ function TableList() {
             deleteDomain(item.metadata?.labels?.domain);
           },
           connectDomain: () => {
-            window.open('localhost:8888', '_blank').focus();
+            fetch("http://k8s:3001/getDomainConnection").then(response => {
+              return response.json();
+            }).then(result => {
+              const hostname = result.serviceName;
+              const username = 'root';
+              const password = 'b3BlbmZpbmQ%3D';
+              const url = `http://k8s:31001/?hostname=${hostname}&username=${username}&password=${password}`;
+              window.open(url, '_blank').focus();
+            });
           }
         }
       });

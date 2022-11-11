@@ -53,7 +53,7 @@ router.post('/deleteDomain', jsonParser, (req, res) => {
 });
 
 router.post('/addDomain', jsonParser, (req, res) => {
-  console.log('Add', req.body.domainName);
+  console.log('Add', req.body?.domainName, req.body?.imageVersion);
   const param = req.body;
   if (_.isNil(param.domainName) || _.isNil(param.imageVersion)) {
     res.json({ result: 'FAIL', reason: 'No param body' });
@@ -62,3 +62,19 @@ router.post('/addDomain', jsonParser, (req, res) => {
   console.log(`[Add] Domain ${param.domainName} Version ${param.imageVersion} success`);
   res.json({ result: 'SUCCESS' });
 });
+
+router.post('/getDomainConnection', jsonParser, (req, res) => {
+  console.log('Get connection info', req.body.domainName);
+  const param = req.body;
+  if (_.isNil(param.domainName)) {
+    res.json({ result: 'FAIL', reason: 'No param body' });
+  }
+  exec('./get_service.py', (error, stdout, stderr) => {
+    if (error) {
+      console.error(`error: ${error}`);
+      return;
+    }
+    const serviceName = stdout;
+    res.json({ result: 'SUCCESS', serviceName: serviceName });
+  });
+})
