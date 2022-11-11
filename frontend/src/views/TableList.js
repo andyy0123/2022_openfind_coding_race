@@ -39,7 +39,7 @@ function TableList() {
           domainLink: `http://${item.metadata?.labels?.domain}`,
           domainImage: item.metadata?.image,
           domainVersion: item.metadata?.version,
-          domainStatus: item.status?.phase,
+          domainStatus: item.metadata.deletionTimestamp ? 'TERMINATING' : item.status?.phase,
           deleteDomain: () => {
             console.log(`[Delete] ${item.metadata?.labels?.domain}`);
             deleteDomain(item.metadata?.labels?.domain);
