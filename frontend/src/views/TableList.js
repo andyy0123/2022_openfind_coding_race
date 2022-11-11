@@ -45,7 +45,14 @@ function TableList() {
             deleteDomain(item.metadata?.labels?.domain);
           },
           connectDomain: () => {
-            fetch("http://k8s:3001/getDomainConnection").then(response => {
+            fetch("http://k8s:3001/getDomainConnection", {
+              method: "POST",
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ domainName: item.metadata?.labels?.domain })
+            }).then(response => {
               return response.json();
             }).then(result => {
               const hostname = result.serviceName;

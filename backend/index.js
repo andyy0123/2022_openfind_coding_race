@@ -69,7 +69,7 @@ router.post('/getDomainConnection', jsonParser, (req, res) => {
   if (_.isNil(param.domainName)) {
     res.json({ result: 'FAIL', reason: 'No param body' });
   }
-  exec('./get_service.py', (error, stdout, stderr) => {
+  exec(`./get_service.py ${param.domainName}`, (error, stdout, stderr) => {
     if (error) {
       console.error(`error: ${error}`);
       return;
