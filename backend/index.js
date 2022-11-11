@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 });
 
 router.get('/getDomainList', (req, res) => {
-  exec('./list_pod.py', (error, stdout, stderr) => {
+  exec('list_pod.py', (error, stdout, stderr) => {
     if (error) {
       console.error(`error: ${error}`);
       return;
@@ -69,7 +69,7 @@ router.post('/getDomainConnection', jsonParser, (req, res) => {
   if (_.isNil(param.domainName)) {
     res.json({ result: 'FAIL', reason: 'No param body' });
   }
-  exec('./get_service.py', (error, stdout, stderr) => {
+  exec('get_service.py', (error, stdout, stderr) => {
     if (error) {
       console.error(`error: ${error}`);
       return;
