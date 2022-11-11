@@ -37,7 +37,7 @@ router.get('/getDomainList', (req, res) => {
       item.metadata.version = item.spec?.containers[0].image?.split('/')[1].split(':')[1];
     });
     res.json({ result: 'SUCCESS', data });
-  })
+  });
 });
 
 router.post('/deleteDomain', jsonParser, (req, res) => {
@@ -46,11 +46,10 @@ router.post('/deleteDomain', jsonParser, (req, res) => {
   if (_.isNil(param.domainName)) {
     res.json({ result: 'FAIL', reason: 'No param body' });
   }
-  const deleteDomainShell = fork("delete.py", [param.domainName]);
-  deleteDomainShell.on('close', (code) => {
-    console.log(`[Delete] Domain ${param.domainName} success`);
-    res.json({ result: 'SUCCESS' });
-  });
+
+  exec(`delete.py ${param.domainName}`);
+  console.log(`[Delete] Domain ${param.domainName} success`);
+  res.json({ result: 'SUCCESS' });
 });
 
 router.post('/addDomain', jsonParser, (req, res) => {
@@ -59,9 +58,7 @@ router.post('/addDomain', jsonParser, (req, res) => {
   if (_.isNil(param.domainName) || _.isNil(param.imageVersion)) {
     res.json({ result: 'FAIL', reason: 'No param body' });
   }
-  const addDomainShell = fork("deployment.py", [param.domainName, param.imageVersion]);
-  addDomainShell.on('close', (code) => {
-    console.log(`[Deployment] Domain ${param.domainName} Version ${param.imageVersion} success`);
-    res.json({ result: 'SUCCESS' });
-  });
+  exec(`deployment.py ${param.domainName} ${param.imageVersion}`);
+  console.log(`[Add] Domain ${param.domainName} Version ${param.imageVersion} success`);
+  res.json({ result: 'SUCCESS' });
 });
