@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 });
 
 router.get('/getDomainList', (req, res) => {
-  exec('list_pod.py', (error, stdout, stderr) => {
+  exec('./list_pod.py', (error, stdout, stderr) => {
     if (error) {
       console.error(`error: ${error}`);
       return;
@@ -47,7 +47,7 @@ router.post('/deleteDomain', jsonParser, (req, res) => {
     res.json({ result: 'FAIL', reason: 'No param body' });
   }
 
-  exec(`delete.py ${param.domainName}`);
+  exec(`./delete.py ${param.domainName}`);
   console.log(`[Delete] Domain ${param.domainName} success`);
   res.json({ result: 'SUCCESS' });
 });
@@ -58,7 +58,7 @@ router.post('/addDomain', jsonParser, (req, res) => {
   if (_.isNil(param.domainName) || _.isNil(param.imageVersion)) {
     res.json({ result: 'FAIL', reason: 'No param body' });
   }
-  exec(`deployment.py ${param.domainName} ${param.imageVersion}`);
+  exec(`./deployment.py ${param.domainName} ${param.imageVersion}`);
   console.log(`[Add] Domain ${param.domainName} Version ${param.imageVersion} success`);
   res.json({ result: 'SUCCESS' });
 });
@@ -69,7 +69,7 @@ router.post('/getDomainConnection', jsonParser, (req, res) => {
   if (_.isNil(param.domainName)) {
     res.json({ result: 'FAIL', reason: 'No param body' });
   }
-  exec('get_service.py', (error, stdout, stderr) => {
+  exec('./get_service.py', (error, stdout, stderr) => {
     if (error) {
       console.error(`error: ${error}`);
       return;
